@@ -100,7 +100,7 @@ const mainGuard = (req, res, next) => {
   // ── b) Bad user-agent check ───────────────────────────────────────────────
   const isBadAgent = BAD_AGENTS.some(agent => ua.includes(agent));
   if (isBadAgent) {
-    logSecurityEvent('BAD_AGENT', ip, `UA: ${ua.slice(0, 80)}`);
+    logSecurityEvent('BAD_AGENT', ip, `Path: ${path} | UA: ${ua.slice(0, 80)}`);
     suspiciousIps.add(ip);
     return res.status(403).json({ success: false, message: 'Access denied.' });
   }

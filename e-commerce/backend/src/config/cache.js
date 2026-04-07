@@ -17,10 +17,8 @@ try {
   // If a full URL is provided (like Render's internal URL), use it directly.
   if (process.env.REDIS_URL) {
     redisClient = new Redis(process.env.REDIS_URL, {
-      lazyConnect: true,
-      connectTimeout: 5000,
-      maxRetriesPerRequest: 3,
-      enableOfflineQueue: false,
+      connectTimeout: 10000,
+      maxRetriesPerRequest: null,
       tls: process.env.REDIS_URL.startsWith('rediss://') ? { rejectUnauthorized: false } : undefined,
     });
   } else {
@@ -37,6 +35,7 @@ try {
     });
   }
 
+  // Redis connects automatically. Handlers below:
   redisClient.on('connect', () => {
     useRedis = true;
     console.log('✅ Redis connected — using Redis cache');
@@ -44,12 +43,6 @@ try {
 
   redisClient.on('error', (err) => {
     if (useRedis) console.log(`⚠️  Redis disconnected: ${err.message}`);
-    useRedis = false;
-  });
-
-  // Try to connect
-  redisClient.connect().catch((err) => {
-    console.log(`ℹ️  Redis connection failed: ${err.message}. Using node-cache fallback.`);
     useRedis = false;
   });
 } catch (e) {

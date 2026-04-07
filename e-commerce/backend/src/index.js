@@ -29,7 +29,7 @@ app.use(helmet({
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000','https://ecommerce-1-mrzk.onrender.com'],
+  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -112,6 +112,8 @@ app.get('/api/docs.json', (req, res) => {
 });
 
 // ─── ROUTES ───────────────────────────────────────────────────────────────────
+app.get('/', (req, res) => res.json({ success: true, message: 'ShopZone API is Live' }));
+
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/products', apiLimiter, productRoutes);
 app.use('/api/categories', apiLimiter, categoryRoutes);
