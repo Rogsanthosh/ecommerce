@@ -85,6 +85,12 @@ const mainGuard = (req, res, next) => {
   const path = req.path.toLowerCase();
   const raw = req.originalUrl.toLowerCase();
 
+  // ─── BYPASS FOR HEALTH CHECKS ──────────────────────────────────────────
+  // Render health checks and uptime monitors should never be blocked
+  if (path === '/ping' || path === '/health' || path === '/api/health') {
+    return next();
+  }
+
   // ── a) Permanently suspicious IP (flagged earlier this session) ───────────
   if (suspiciousIps.has(ip)) {
     return res.status(403).json({ success: false, message: 'Access denied.' });
