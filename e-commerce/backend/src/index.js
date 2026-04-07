@@ -18,8 +18,17 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ─── CLOUDFLARE-STYLE GUARD (first line of defence) ─────────────────────────
-app.use(mainGuard);
+// ─── CORS (Must be at the very top for Render/Preflight requests) ─────────────
+app.use(cors({
+  origin: process.env.CORS_ORIGIN?.split(',') || [
+    'http://localhost:5173', 
+    'http://localhost:3000', 
+    'https://ecommerce-1-mrzk.onrender.com'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 
 // ─── SECURITY MIDDLEWARE ──────────────────────────────────────────────────────
 app.use(helmet({
@@ -27,13 +36,8 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// ─── CORS ────────────────────────────────────────────────────────────────────
-app.use(cors({
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000','https://ecommerce-1-mrzk.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+// ─── CLOUDFLARE-STYLE GUARD (Security next) ─────────────────────────────────
+app.use(mainGuard);
 
 // ─── PERFORMANCE MIDDLEWARE ───────────────────────────────────────────────────
 // Compress responses (gzip) - reduces bandwidth by ~70%
