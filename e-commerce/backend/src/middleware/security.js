@@ -87,7 +87,8 @@ const mainGuard = (req, res, next) => {
 
   // ─── BYPASS FOR HEALTH CHECKS ──────────────────────────────────────────
   // Render health checks and uptime monitors should never be blocked
-  if (path === '/ping' || path === '/health' || path === '/api/health') {
+  // We allow root '/' because Render typically pings the home path for health.
+  if (path === '/' || path === '/ping' || path === '/health' || path === '/api/health') {
     return next();
   }
 
