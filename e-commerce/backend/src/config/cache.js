@@ -42,18 +42,18 @@ try {
     console.log('✅ Redis connected — using Redis cache');
   });
 
-  redisClient.on('error', () => {
-    if (useRedis) console.log('⚠️  Redis disconnected — falling back to in-memory cache');
+  redisClient.on('error', (err) => {
+    if (useRedis) console.log(`⚠️  Redis disconnected: ${err.message}`);
     useRedis = false;
   });
 
   // Try to connect
-  redisClient.connect().catch(() => {
-    console.log('ℹ️  Redis not available — using in-memory cache (node-cache)');
+  redisClient.connect().catch((err) => {
+    console.log(`ℹ️  Redis connection failed: ${err.message}. Using node-cache fallback.`);
     useRedis = false;
   });
 } catch (e) {
-  console.log('ℹ️  ioredis not loaded — using in-memory cache');
+  console.log(`ℹ️  ioredis not loaded: ${e.message}`);
 }
 
 // ─── UNIFIED CACHE INTERFACE ──────────────────────────────────────────────────
