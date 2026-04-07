@@ -13,16 +13,28 @@ let useRedis = false;
 
 try {
   const Redis = require('ioredis');
-  redisClient = new Redis({
-    host: process.env.REDIS_HOST || '127.0.0.1',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-    password: process.env.REDIS_PASSWORD || undefined,
-    db: parseInt(process.env.REDIS_DB || '0'),
-    lazyConnect: true,
-    connectTimeout: 2000,
-    maxRetriesPerRequest: 1,
-    enableOfflineQueue: false,
-  });
+  
+  // If a full URL is provided (like Render's internal URL), use it directly.
+  if (process.env.REDIS_URL) {
+    redisClient = new Redis(process.env.REDIS_URL, {
+      lazyConnect: true,
+      connectTimeout: 2000,
+      maxRetriesPerRequest: 1,
+      enableOfflineQueue: false,
+    });
+  } else {
+    // Otherwise fallback to individual parts
+    redisClient = new Redis({
+      host: process.env.REDIS_HOST || '127.0.0.1',
+      port: parseInt(process.env.REDIS_PORT || '6379'),
+      password: process.env.REDIS_PASSWORD || undefined,
+      db: parseInt(process.env.REDIS_DB || '0'),
+      lazyConnect: true,
+      connectTimeout: 2000,
+      maxRetriesPerRequest: 1,
+      enableOfflineQueue: false,
+    });
+  }
 
   redisClient.on('connect', () => {
     useRedis = true;
