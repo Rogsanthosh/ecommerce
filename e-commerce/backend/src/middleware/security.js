@@ -85,6 +85,12 @@ const mainGuard = (req, res, next) => {
   const path = req.path.toLowerCase();
   const raw = req.originalUrl.toLowerCase();
 
+  // ─── BYPASS FOR OPTIONS (CORS Preflight) ──────────────────────────────
+  // Browser sends OPTIONS before the actual request. This must pass first.
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   // ─── BYPASS FOR HEALTH CHECKS ──────────────────────────────────────────
   // Render health checks and uptime monitors should never be blocked
   // We allow root '/' because Render typically pings the home path for health.
