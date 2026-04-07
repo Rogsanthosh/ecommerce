@@ -1,0 +1,100 @@
+/* responsive.css */
+/* Make all pages perfectly responsive on mobile screens (max-width: 768px) */
+
+@media (max-width: 768px) {
+  /* ── NAVBAR ── */
+  .res-nav {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 1rem !important;
+    gap: 1rem !important;
+  }
+  .res-nav-links {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* ── PRODUCT LIST PAGE ── */
+  .res-layout {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  .res-sidebar {
+    width: 100% !important;
+  }
+  .res-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  .res-hero {
+    padding: 2rem 1rem !important;
+  }
+  .res-hero-title {
+    font-size: 1.5rem !important;
+  }
+  .res-container {
+    padding: 1rem !important;
+  }
+  .res-toolbar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.8rem !important;
+  }
+  .res-sort-select {
+    width: 100% !important;
+  }
+
+  /* ── PRODUCT CARD ── */
+  .res-card-img {
+    height: 160px !important;
+  }
+  .res-card-body {
+    padding: 0.75rem !important;
+  }
+  .res-card-price {
+    font-size: 1rem !important;
+  }
+  .res-card-name {
+    font-size: 0.9rem !important;
+  }
+  .res-card-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  /* ── PRODUCT DETAIL PAGE ── */
+  .res-detail-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    padding: 1.25rem !important;
+  }
+  .res-detail-img {
+    height: 300px !important;
+  }
+  .res-detail-name {
+    font-size: 1.3rem !important;
+  }
+  .res-detail-price {
+    font-size: 1.5rem !important;
+  }
+  .res-detail-section {
+    padding: 1.25rem !important;
+  }
+  .res-detail-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .res-review-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+}
+
+/* Extra small devices (phones portait) */
+@media (max-width: 480px) {
+  .res-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
