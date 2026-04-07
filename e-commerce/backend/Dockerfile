@@ -1,24 +1,24 @@
-# Use official Node runtime as a parent image
-FROM node:20-alpine AS builder
+# Use official Node full runtime (bypasses all OpenSSL/Alpine bugs)
+FROM node:20 AS builder
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies (including Prisma CLI)
-RUN npm install
+# Clean cache and install
+RUN npm cache clean --force && npm install
 
-# Copy the rest of the application code
 COPY . .
 
-# Generate Prisma Client
+# 🔥 BUST THE RENDER DOCKER CACHE 🔥
+# By changing this number, Render is forced to run Prisma fresh instead of using the old Alpine cache!
+ENV BUST_DOCKER_CACHE=1
+
 RUN npx prisma generate
 
 # -------------------------
 # Production Image
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
@@ -28,11 +28,8 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/prisma ./prisma
 
-# Make sure to set production environment
 ENV NODE_ENV=production
 
-# Expose port (Render automatically uses PORT variable)
 EXPOSE 5000
 
-# Start the application
 CMD ["npm", "start"]
