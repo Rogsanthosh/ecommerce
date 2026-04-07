@@ -21,10 +21,8 @@ Full-featured product management API with search, filtering, admin CRUD, and JWT
     },
     servers: [
       {
-        url: process.env.NODE_ENV === 'production'
-          ? process.env.API_URL || 'https://your-app.onrender.com'
-          : `http://localhost:${process.env.PORT || 5000}`,
-        description: process.env.NODE_ENV === 'production' ? 'Production Server' : 'Development Server',
+        url: '/',
+        description: 'Current Server',
       },
     ],
     components: {
