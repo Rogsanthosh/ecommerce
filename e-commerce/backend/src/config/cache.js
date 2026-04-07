@@ -18,9 +18,10 @@ try {
   if (process.env.REDIS_URL) {
     redisClient = new Redis(process.env.REDIS_URL, {
       lazyConnect: true,
-      connectTimeout: 2000,
-      maxRetriesPerRequest: 1,
+      connectTimeout: 5000,
+      maxRetriesPerRequest: 3,
       enableOfflineQueue: false,
+      tls: process.env.REDIS_URL.startsWith('rediss://') ? { rejectUnauthorized: false } : undefined,
     });
   } else {
     // Otherwise fallback to individual parts
